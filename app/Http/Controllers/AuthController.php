@@ -13,10 +13,14 @@ class AuthController extends Controller
     {
         $user = User::create([
             'name' => $request->input('name'),
+
             'email' => $request->input('email'),
+
             'password' => Hash::make(
                 $request->input('password')
             ),
+
+            'role' => 'cliente',
         ]);
 
         return response()->json([
@@ -50,7 +54,19 @@ class AuthController extends Controller
             ->plainTextToken;
 
         return response()->json([
-            'token' => $token
+
+            'token' => $token,
+
+            'user' => [
+
+                'id' => $user->id,
+
+                'name' => $user->name,
+
+                'email' => $user->email,
+
+                'role' => $user->role,
+            ]
         ]);
     }
 
@@ -73,4 +89,47 @@ class AuthController extends Controller
             'message' => 'Logout correcto'
         ]);
     }
+
+    // LOGIN GOOGLE
+public function googleLogin(Request $request)
+{
+    $user = User::where(
+        'email',
+        $request->email
+    )->first();
+
+    if (!$user) {
+
+        $user = User::create([
+
+            'name' => $request->name,
+
+            'email' => $request->email,
+
+            'password' => null,
+
+            'role' => 'cliente',
+        ]);
+    }
+
+    $token = $user
+        ->createToken('api-token')
+        ->plainTextToken;
+
+    return response()->json([
+
+        'token' => $token,
+
+        'user' => [
+
+            'id' => $user->id,
+
+            'name' => $user->name,
+
+            'email' => $user->email,
+
+            'role' => $user->role,
+        ]
+    ]);
+}
 }

@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductoController;
 
+Route::post('/google-login', 
+    [AuthController::class, 'googleLogin']);
+
 Route::post('/register',
     [AuthController::class, 'register']);
 
