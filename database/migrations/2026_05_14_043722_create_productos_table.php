@@ -17,6 +17,8 @@ return new class extends Migration
 
             $table->string('nombre');
 
+            $table->string('nivel');
+
             $table->text('descripcion');
 
             $table->decimal('precio', 8, 2);

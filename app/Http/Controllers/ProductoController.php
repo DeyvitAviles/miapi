@@ -41,6 +41,9 @@ class ProductoController extends Controller
             'nombre' =>
                 $request->nombre,
 
+            'nivel' =>
+                $request->nivel,
+
             'descripcion' =>
                 $request->descripcion,
 
