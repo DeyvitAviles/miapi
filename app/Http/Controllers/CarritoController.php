@@ -9,10 +9,7 @@ class CarritoController extends Controller
 {
     public function index(Request $request)
 {
-    return response()->json([
-        'auth_user' => $request->user(),
-        'all_items' => CarritoItem::all(),
-    ]);
+    dd($request->user());
 }
 
     public function agregar(Request $request)
