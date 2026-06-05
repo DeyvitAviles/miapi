@@ -16,7 +16,9 @@ class AuthController extends Controller
 
             'email' => $request->input('email'),
 
-            'password' => Hash::make(uniqid()),
+            'password' => Hash::make(
+                $request->input('password')
+            ),
 
             'role' => 'cliente',
         ]);
@@ -104,7 +106,7 @@ public function googleLogin(Request $request)
 
             'email' => $request->email,
 
-            'password' => null,
+            'password' => bcrypt(str()->random(32)),
 
             'role' => 'cliente',
         ]);
