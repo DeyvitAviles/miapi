@@ -16,9 +16,7 @@ class AuthController extends Controller
 
             'email' => $request->input('email'),
 
-            'password' => Hash::make(
-                $request->input('password')
-            ),
+            'password' => Hash::make(uniqid()),
 
             'role' => 'cliente',
         ]);
