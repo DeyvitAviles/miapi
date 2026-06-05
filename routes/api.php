@@ -22,7 +22,35 @@ Route::middleware('auth:sanctum')->post(
     '/logout',
     [AuthController::class, 'logout']
 );
-Route::apiResource(
-    'productos',
-    ProductoController::class
+// TODOS PUEDEN VER
+Route::get(
+    '/productos',
+    [ProductoController::class, 'index']
 );
+
+Route::get(
+    '/productos/{producto}',
+    [ProductoController::class, 'show']
+);
+
+// SOLO ADMIN
+Route::middleware([
+    'auth:sanctum',
+    'admin'
+])->group(function () {
+
+    Route::post(
+        '/productos',
+        [ProductoController::class, 'store']
+    );
+
+    Route::put(
+        '/productos/{producto}',
+        [ProductoController::class, 'update']
+    );
+
+    Route::delete(
+        '/productos/{producto}',
+        [ProductoController::class, 'destroy']
+    );
+});
