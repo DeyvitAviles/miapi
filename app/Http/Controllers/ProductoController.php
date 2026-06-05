@@ -102,6 +102,9 @@ class ProductoController extends Controller
         $producto->nombre =
             $request->nombre;
 
+        $producto->nivel =
+            $request->nivel;
+
         $producto->descripcion =
             $request->descripcion;
 
