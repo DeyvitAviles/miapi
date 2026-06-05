@@ -8,9 +8,20 @@ use Illuminate\Http\Request;
 class CarritoController extends Controller
 {
     public function index(Request $request)
-{
-    dd($request->user());
-}
+    {
+        $items = CarritoItem::with('producto')
+            ->where('user_id', $request->user()->id)
+            ->get();
+
+        $total = $items->sum(function ($item) {
+            return $item->producto->precio * $item->cantidad;
+        });
+
+        return response()->json([
+            'items' => $items,
+            'total' => $total,
+        ]);
+    }
 
     public function agregar(Request $request)
     {
