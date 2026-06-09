@@ -50,6 +50,8 @@ Route::middleware('auth:sanctum')->group(function () {
         '/carrito/{id}',
         [CarritoController::class, 'eliminar']
     );
+
+    Route::post('/guardar-token', [AuthController::class, 'guardarToken']);
 });
 
 // SOLO ADMIN

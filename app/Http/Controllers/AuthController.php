@@ -91,45 +91,61 @@ class AuthController extends Controller
     }
 
     // LOGIN GOOGLE
-public function googleLogin(Request $request)
-{
-    $user = User::where(
-        'email',
-        $request->email
-    )->first();
+    public function googleLogin(Request $request)
+    {
+        $user = User::where(
+            'email',
+            $request->email
+        )->first();
 
-    if (!$user) {
+        if (!$user) {
 
-        $user = User::create([
+            $user = User::create([
 
-            'name' => $request->name,
+                'name' => $request->name,
 
-            'email' => $request->email,
+                'email' => $request->email,
 
-            'password' => bcrypt(str()->random(32)),
+                'password' => bcrypt(str()->random(32)),
 
-            'role' => 'cliente',
+                'role' => 'cliente',
+            ]);
+        }
+
+        $token = $user
+            ->createToken('api-token')
+            ->plainTextToken;
+
+        return response()->json([
+
+            'token' => $token,
+
+            'user' => [
+
+                'id' => $user->id,
+
+                'name' => $user->name,
+
+                'email' => $user->email,
+
+                'role' => $user->role,
+            ]
         ]);
     }
 
-    $token = $user
-        ->createToken('api-token')
-        ->plainTextToken;
+    public function guardarToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required'
+        ]);
 
-    return response()->json([
+        $user = $request->user();
 
-        'token' => $token,
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
 
-        'user' => [
-
-            'id' => $user->id,
-
-            'name' => $user->name,
-
-            'email' => $user->email,
-
-            'role' => $user->role,
-        ]
-    ]);
-}
+        return response()->json([
+            'message' => 'Token guardado'
+        ]);
+    }
 }
