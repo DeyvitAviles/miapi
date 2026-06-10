@@ -134,18 +134,12 @@ class AuthController extends Controller
     }
 
     public function guardarToken(Request $request)
-    {
-        $request->validate([
-            'fcm_token' => 'required'
-        ]);
-
-        $user = $request->user();
-
-        $user->fcm_token = $request->fcm_token;
-        $user->save();
-
-        return response()->json([
-            'message' => 'Token guardado'
-        ]);
-    }
+{
+    return response()->json([
+        'user' => $request->user(),
+        'bearer' => $request->bearerToken(),
+        'headers' => $request->headers->all(),
+        'fcm' => $request->fcm_token,
+    ]);
+}
 }
